@@ -1,0 +1,9 @@
+<changelog>
+    <release
+        date="2020-04-20"
+        versionName="First Release"
+        versionCode="100">
+        <new>Initial Release</new>
+        <new>Night theme</new>
+    </release>
+</changelog>

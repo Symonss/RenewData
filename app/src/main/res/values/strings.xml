@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">Renew Data</string>
+    <string name="telkom">Telkom</string>
+    <string name="purchased_time">Purchased Time</string>
+    <string name="expiry_time">Expiry Time</string>
+    <string name="time_left">Time Left</string>
+    <string name="renew_now">Renew Now</string>
+    <string name="expired">Expired</string>
+    <string name="feedback">Feedback</string>
+    <string name="about_renewdata">About Renew Data</string>
+    <string name="sync_sms">Sync with Messages</string>
+    <string name="email">denispeterson96@gmail.com</string>
+    <!--    About activity  -->
+    <string name="about">About</string>
+    <string name="app_version">V: %1$s</string>
+    <string name="credits">Credit</string>
+    <string name="copyright">2019–2020 <a href="https://dennohpeter.com">Ariyans Techies</a>. All Rights Reserved.</string>
+    <string name="rate">Rate</string>
+    <string name="show_changelog">Show Changelog</string>
+    <!--    Contributors Credit card -->
+    <string name="ok">OK</string>
+    <string name="role">Developer Role</string>
+    <string name="name">Developer Name</string>
+    <!--    Developer names and Roles -->
+    <string name="creator">Dennis Peterson</string>
+    <string name="creator_roles">Lead Developer</string>
+    <string name="dev1">Coder Jaymoh</string>
+    <string name="idealist">Idealist</string>
+    <string name="dev2">Symons Ombori</string>
+    <string name="contributor">Contributor</string>
+    <string name="select_network">Select Network: </string>
+    <string name="date">date</string>
+    <string name="message_body">Message body</string>
+    <string name="nothing_to_show">Nothing to show</string>
+
 </resources>
