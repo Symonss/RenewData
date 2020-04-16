@@ -24,7 +24,7 @@ public class PageAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment;
-        switch (position){
+        switch (position) {
             case 1:
                 fragment = new OptionsTab();
                 break;
@@ -32,7 +32,8 @@ public class PageAdapter extends FragmentStatePagerAdapter {
                 fragment = new LogsTab();
                 break;
             default:
-                fragment = new HomeTab();}
+                fragment = new HomeTab();
+        }
         return fragment;
     }
 }

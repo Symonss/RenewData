@@ -15,12 +15,15 @@ public class LogsAdapter extends RecyclerView.Adapter<LogsViewHolder> {
     LogsAdapter() {
         this.messages = new ArrayList<>();
     }
+
     void add(MessageModel message) {
         messages.add(message);
     }
-    int size(){
+
+    int size() {
         return messages.size();
     }
+
     @NonNull
     @Override
     public LogsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

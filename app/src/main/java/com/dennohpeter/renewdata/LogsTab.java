@@ -14,29 +14,31 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class LogsTab extends androidx.fragment.app.Fragment {
+    private static final String TAG = "LogsTab";
     private RecyclerView recyclerView;
     private TextView nothing_to_show;
     private DatabaseHelper databaseHelper;
     private LogsAdapter logsAdapter;
-    private static final String TAG = "LogsTab";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
-       View root = inflater.inflate(R.layout.logs_tab, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.logs_tab, container, false);
         recyclerView = root.findViewById(R.id.logs_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         nothing_to_show = root.findViewById(R.id.nothing_to_show);
-        logsAdapter =  new LogsAdapter();
+        logsAdapter = new LogsAdapter();
         recyclerView.setAdapter(logsAdapter);
         databaseHelper = new DatabaseHelper(getContext());
         Log.d(TAG, "onCreateView: ");
         new populateRecyclerView().execute();
         return root;
     }
-    class populateRecyclerView extends AsyncTask<Void, MessageModel, Void>{
+
+    class populateRecyclerView extends AsyncTask<Void, MessageModel, Void> {
         Cursor cursor;
         SQLiteDatabase db;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -45,13 +47,13 @@ public class LogsTab extends androidx.fragment.app.Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-             cursor = databaseHelper.log_messages(db);
-            while (cursor.moveToNext()){
+            cursor = databaseHelper.log_messages(db);
+            while (cursor.moveToNext()) {
                 String msg_from = cursor.getString(cursor.getColumnIndex("msg_from"));
                 String msg_body = cursor.getString(cursor.getColumnIndex("msg_body"));
                 long dateInMilliseconds = cursor.getLong(cursor.getColumnIndex("received_date"));
                 String formatted_date = new DateUtil().getFormattedDate(dateInMilliseconds);
-                publishProgress( new MessageModel(formatted_date, msg_body, msg_from));
+                publishProgress(new MessageModel(formatted_date, msg_body, msg_from));
             }
             return null;
         }
@@ -66,10 +68,10 @@ public class LogsTab extends androidx.fragment.app.Fragment {
         protected void onPostExecute(Void s) {
             cursor.close();
             db.close();
-            if (logsAdapter.size()==0){
+            if (logsAdapter.size() == 0) {
                 recyclerView.setVisibility(View.GONE);
                 nothing_to_show.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 nothing_to_show.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
             }

@@ -1,68 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:padding="15dp"
         tools:context=".MainActivity">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:padding="10dp"
             android:text="@string/purchased_time"
             android:textColor="@android:color/black"
-            android:padding="10dp"
-            android:layout_marginTop="45dp"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/purchased_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/purchased_time"
+            android:layout_marginBottom="10dp"
             android:padding="15dp"
-            android:layout_marginBottom="10dp"/>
+            android:text="@string/purchased_time" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:text="@string/expiry_time"
             android:textColor="@android:color/black"
-            android:padding="10dp"
-            android:textSize="19sp"/>
+            android:textSize="19sp" />
+
         <TextView
             android:id="@+id/expiry_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/expiry_time"
+            android:layout_marginBottom="10dp"
             android:padding="15dp"
-            android:layout_marginBottom="10dp"/>
+            android:text="@string/expiry_time" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:text="@string/time_left"
             android:textColor="@android:color/black"
-            android:padding="10dp"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
+
         <TextView
             android:id="@+id/time_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/time_left"
+            android:layout_marginBottom="10dp"
             android:padding="15dp"
-            android:layout_marginBottom="10dp"/>
+            android:text="@string/time_left" />
 
         <Button
             android:id="@+id/renew_now"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/renew_now"
+            android:layout_marginTop="10dp"
             android:padding="18dp"
-            android:layout_marginTop="10dp"/>
+            android:text="@string/renew_now" />
 
     </LinearLayout>
 </ScrollView>

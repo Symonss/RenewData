@@ -3,18 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/logs_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/logs_recyclerView"
-        tools:listitem="@layout/logs_card"
-        android:layout_marginTop="?actionBarSize" />
+        android:layout_marginTop="?actionBarSize"
+        tools:listitem="@layout/logs_card" />
+
     <TextView
         android:id="@+id/nothing_to_show"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:text="@string/nothing_to_show"
         android:textSize="17sp"
-        android:visibility="gone"
-        android:layout_centerInParent="true" />
+        android:visibility="gone" />
 </RelativeLayout>

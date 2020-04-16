@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.dennohpeter.renewdata"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -33,4 +33,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     // for changelog
     implementation 'com.github.MFlisar:changelog:1.1.6'
+    // http client for making requests
+    implementation 'com.squareup.okhttp3:okhttp:4.5.0'
 }

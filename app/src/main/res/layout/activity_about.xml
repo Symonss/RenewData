@@ -44,8 +44,8 @@
                     android:layout_gravity="center"
                     android:padding="10dp"
                     android:text="@string/app_name"
-                    android:textColor="@android:color/white"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@android:color/white" />
 
                 <TextView
                     android:id="@+id/app_version"
@@ -53,8 +53,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/app_version"
-                    android:textColor="@android:color/white"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
 
             <androidx.appcompat.widget.Toolbar
@@ -125,17 +125,18 @@
 
                 <TextView
                     android:id="@+id/show_changelog"
-                    android:onClick="showChangelog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="showChangelog"
                     android:text="@string/show_changelog" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_arrow_right"
                     android:layout_alignEnd="@id/show_changelog"
-                    android:contentDescription="@string/show_changelog" />
+                    android:layout_alignParentEnd="true"
+                    android:contentDescription="@string/show_changelog"
+                    android:src="@drawable/ic_arrow_right" />
             </RelativeLayout>
 
 
@@ -159,9 +160,9 @@
                     android:id="@+id/copyright"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:autoLink="all"
                     android:gravity="center"
                     android:linksClickable="true"
-                    android:autoLink="all"
                     android:text="@string/copyright" />
             </RelativeLayout>
         </LinearLayout>

@@ -23,6 +23,22 @@ import java.util.List;
 import java.util.Map;
 
 public class AboutActivity extends AppCompatActivity {
+    /*
+     * Takes Activity Context and returns a String of the App Version e.g 1.0
+     */
+    static String appVersion(Context context) {
+        String result = "";
+        try {
+            result = context.getPackageManager().getPackageInfo(context.getPackageName(), 0)
+                    .versionName;
+            result = result.replaceAll("[a-zA-Z]|-", "");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return result;
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +88,7 @@ public class AboutActivity extends AppCompatActivity {
         ChangelogBuilder builder = new ChangelogBuilder()
                 .withUseBulletList(true)
                 .withManagedShowOnStart(false)
-                .withTitle(getString(R.string.app_name) +  " Changelog")
+                .withTitle(getString(R.string.app_name) + " Changelog")
                 .withSorter(new ImportanceChangelogSorter())
                 .withVersionNameFormatter(new DefaultAutoVersionNameFormatter(DefaultAutoVersionNameFormatter.Type.MajorMinor, "b"));
         builder.buildAndShowDialog(this, false);
@@ -80,20 +96,5 @@ public class AboutActivity extends AppCompatActivity {
 
     public void rateApp(View view) {
         Toast.makeText(this, "Rate this app", Toast.LENGTH_SHORT).show();
-    }
-    /*
-     * Takes Activity Context and returns a String of the App Version e.g 1.0
-     */
-    static String appVersion(Context context) {
-        String result = "";
-        try {
-            result = context.getPackageManager().getPackageInfo(context.getPackageName(), 0)
-                    .versionName;
-            result = result.replaceAll("[a-zA-Z]|-", "");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return result;
-
     }
 }
