@@ -38,16 +38,16 @@ public class LogsTab extends androidx.fragment.app.Fragment {
     class populateRecyclerView extends AsyncTask<Void, MessageModel, Void> {
         Cursor cursor;
         SQLiteDatabase db;
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            db = databaseHelper.getReadableDatabase();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            cursor = databaseHelper.log_messages(db);
+
+            db = databaseHelper.getReadableDatabase();
+            cursor = databaseHelper.getLogMessages(db);
             while (cursor.moveToNext()) {
                 String msg_from = cursor.getString(cursor.getColumnIndex("msg_from"));
                 String msg_body = cursor.getString(cursor.getColumnIndex("msg_body"));

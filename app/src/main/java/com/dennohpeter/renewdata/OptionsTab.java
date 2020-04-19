@@ -191,7 +191,7 @@ public class OptionsTab extends androidx.fragment.app.Fragment {
                         // have recharged, have exhausted,have subscribed, balance, awarded, received
                         if (msg_body.contains("recharged") | msg_body.contains("exhausted") | msg_body.contains("subscribed") | msg_body.contains("balance") | msg_body.contains("awarded") | msg_body.contains("received")) {
                             // updating or creating the logs
-                            databaseHelper.create_or_update_logs(db, msg_from, msg_body, msg_date);
+                            databaseHelper.create_or_update_logs(msg_from, msg_body, msg_date);
                         }
                     }
                     // TODO add more sms filters e.g SAF, AIRTEL.

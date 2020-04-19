@@ -35,6 +35,7 @@ public class LogsAdapter extends RecyclerView.Adapter<LogsViewHolder> {
     public void onBindViewHolder(LogsViewHolder holder, int position) {
         holder.received_date.setText(messages.get(position).getDate());
         holder.message_body.setText(messages.get(position).getMessage());
+
     }
 
     @Override

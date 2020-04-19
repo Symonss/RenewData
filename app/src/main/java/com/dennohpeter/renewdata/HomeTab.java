@@ -7,8 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -18,142 +16,131 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Locale;
 
 public class HomeTab extends androidx.fragment.app.Fragment {
-
     private static final String TAG = "Renew Data";
-    private TextView purchased_tm, expiry_tm, tm_left;
-    private long time_left = 0;
-    private long expiry_time;
-    private DatabaseHelper databaseHelper;
-    private SQLiteDatabase db;
-    private boolean timerCounterRunning;
+    private TextView purchased_tmView, expiry_tmView, tm_leftView;
     private DateUtil dateUtil;
+    private TimeManager timeManager;
+    private DatabaseHelper databaseHelper;
     private BroadcastReceiver smsReceivedListener = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive: " + intent.getAction());
-            if (intent.getAction().equals("android.intent.action.SmsReceiver")) {
-                String msg_from = intent.getStringExtra("msg_from");
-                String message = intent.getStringExtra("msg_body");
-                long received_date = intent.getLongExtra("timestampMillis", -1);
-
-                if (msg_from.toLowerCase().contains(getString(R.string.telkom).toLowerCase())) {
-                    Log.d(TAG, "from: " + msg_from + ", message: " + message + "timestamp: " + time_left);
-                    // Save New Received Date to db
-                    Log.d(TAG, "updateTimelineTable DB ");
-                    db = databaseHelper.getWritableDatabase();
-                    databaseHelper.create_or_update_logs(db, msg_from, message, received_date);
-                    db.close();
-
-                    setTimeLineData();
+            String action = intent.getAction();
+            if (action != null) {
+                // When new sms is received
+                if (action.equals("android.intent.action.SmsReceiver")) {
+                    // Extract it's details
+                    String msg_from = intent.getStringExtra("msg_from");
+                    String message = intent.getStringExtra("msg_body");
+                    long received_date = intent.getLongExtra("timestampMillis", -1);
+                    // check if it's from Telkom
+                    if (msg_from.toLowerCase().contains(getString(R.string.telkom).toLowerCase())) {
+                        // Save it  to db
+                        databaseHelper.create_or_update_logs(msg_from, message, received_date);
+                        // after saving, update timeline data
+                        setTimeLineData();
+                    }
                 }
-
             }
-
         }
     };
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.home_tab, container, false);
-        purchased_tm = root.findViewById(R.id.purchased_time);
-        expiry_tm = root.findViewById(R.id.expiry_time);
-        tm_left = root.findViewById(R.id.time_left);
+        // Bind fields
+        purchased_tmView = root.findViewById(R.id.purchased_time);
+        expiry_tmView = root.findViewById(R.id.expiry_time);
+        tm_leftView = root.findViewById(R.id.time_left);
         Button renew_now = root.findViewById(R.id.renew_now);
-        dateUtil = new DateUtil();
+        // Set event listener for renew now btn
         renew_now.setOnClickListener(v -> initRenewProcess());
 
+        dateUtil = new DateUtil();
+        // initialize DatabaseHelper
         databaseHelper = new DatabaseHelper(getContext());
+        // Initialize timeManager
+        timeManager = new TimeManager(getContext());
+        // Populate Timeline fields
         setTimeLineData();
+
+        // Set Alarm Reminder
+        int remindBeforeInMins = 1;
+        setAlarmReminder(remindBeforeInMins);
         return root;
     }
 
-    private void initRenewProcess() {
-        StkPush stkPush = new StkPush(getContext());
-        stkPush.initiateRenewProcess();
+    private void setTimeLineData() {
+        Log.d(TAG, "setting TimeLineData: ");
+        purchased_tmView.setText(dateUtil.getFormattedDate(timeManager.getPurchase_time()).replace("\n", " "));
+        expiry_tmView.setText(dateUtil.getFormattedDate(timeManager.getExpiry_time()).replace("\n", " "));
+        setTimeLeft();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setAlarmManager();
-    }
-
-    private void setTimeLeft(long expiry_time) {
-        time_left = expiry_time - new Date().getTime();
-        new CountDownTimer(time_left, 1000) {
+    private void setTimeLeft() {
+        new CountDownTimer(timeManager.getTimeLeftInMillis(), 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                time_left = millisUntilFinished;
-                updateTimeLeftCountDown();
+                updateTimeLeftCountDown(millisUntilFinished);
             }
 
             @Override
             public void onFinish() {
-                timerCounterRunning = false;
-                tm_left.setText(getString(R.string.expired));
+                tm_leftView.setText(getString(R.string.expired));
             }
         }.start();
 
     }
 
-    private void updateTimeLeftCountDown() {
+    private void updateTimeLeftCountDown(long time_left) {
         long days = time_left / (24 * 60 * 60 * 1000);
         long hours = time_left / (60 * 60 * 1000) % 24;
         long minutes = time_left / (60 * 1000) % 60;
         long seconds = time_left / 1000 % 60;
         String formatted_time_left = String.format(Locale.getDefault(), "%02d d, %02d hrs, %02d mins, %02d sec", days, hours, minutes, seconds);
-        tm_left.setText(formatted_time_left);
+        tm_leftView.setText(formatted_time_left);
     }
 
-    private void setTimeLineData() {
-        Log.d(TAG, "setTimeLineData: ");
-        db = databaseHelper.getReadableDatabase();
-        Cursor cursor = databaseHelper.log_messages(db);
-        while (cursor.moveToNext()) {
-            long purchase_time = cursor.getLong(cursor.getColumnIndex("received_date"));
-            expiry_time = dateUtil.add24Hours(purchase_time);
+    private void setAlarmReminder(int remindBeforeInMins) {
+        Log.d(TAG, "In setAlarmReminder Method");
+        // Set notification and time left
+        Intent intent = new Intent(getContext(), BroadcastManager.class);
+        intent.putExtra("remindBeforeInMins", remindBeforeInMins);
+        intent.setAction("android.intent.startAlarm");
+        // getBroadCast(context, requestCode, intent, flags)
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-            purchased_tm.setText(dateUtil.getFormattedDate(purchase_time).replace("\n", " "));
-            expiry_tm.setText(dateUtil.getFormattedDate(expiry_time).replace("\n", " "));
-            setTimeLeft(expiry_time);
-            Log.d(TAG, "setTimeLineData: in while.");
-            if (cursor.isFirst()) {
-                break;
-            }
+        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Activity.ALARM_SERVICE);
+
+        // create time to ring;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeManager.getExpiry_time());
+        // time in minutes to remind before to renew before expiry
+        // Note the -ve sign is to make it before.
+        calendar.add(Calendar.MINUTE, -(remindBeforeInMins));
+        long alarmStartTime = calendar.getTimeInMillis();
+        if (timeManager.isExpired()) {
+            // Cancel Alarm when expiry date is passed
+            alarmManager.cancel(pendingIntent);
+        } else {
+            // Set Alarm
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime, pendingIntent);
         }
-        cursor.close();
-        db.close();
+
     }
 
-    private void setAlarmManager() {
-        Log.d(TAG, "setAlarmManager: ");
-        // time in Milliseconds to the of next reminder.
-        long remindBeforeInMins = 1;
-        long time_to_ring = expiry_time - dateUtil.toMillis(remindBeforeInMins);
+    private void snooze() {
+        int remindMeAgainInMins = 1;
+        setAlarmReminder(remindMeAgainInMins);
+    }
 
-//        long timeMs = time_to_ring - dateUtil.currentDate();
-        long timeMs = 60000;
-        if (timeMs > 0) {
-            Log.d(TAG, "setAlarmManager: " + timeMs);
-            Intent intent = new Intent(getContext(), BroadcastManager.class);
-            intent.putExtra("remindBeforeInMins", remindBeforeInMins);
-            intent.setAction("android.intent.startAlarm");
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Activity.ALARM_SERVICE);
 
-            Log.d(TAG, "setAlarmManager: " + dateUtil.toMinutes(timeMs));
-            Log.d(TAG, "setAlarmManager: " + dateUtil.getFormattedDate(timeMs));
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeMs, pendingIntent);
-        }
-
+    private void initRenewProcess() {
+        StkPush stkPush = new StkPush(getContext());
+        stkPush.initiateRenewProcess();
     }
 
     @Override
@@ -177,4 +164,5 @@ public class HomeTab extends androidx.fragment.app.Fragment {
         filter.addAction("android.intent.action.SmsReceiver");
         getContext().registerReceiver(smsReceivedListener, filter);
     }
+
 }

@@ -21,7 +21,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class StkPush {
+class StkPush {
     private static final String TAG = "StkPush";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private String consumer_key = "om4hPSFFPzlAABEpUiKoT1514gIVwKIC";
@@ -46,7 +46,7 @@ public class StkPush {
         return Base64.encodeToString(bytes, Base64.NO_WRAP);
     }
 
-    public void initiateRenewProcess() {
+    void initiateRenewProcess() {
         String generate_endpoint = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
         Request request = new Request.Builder()
                 .url(generate_endpoint)

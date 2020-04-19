@@ -26,7 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    void create_or_update_logs(SQLiteDatabase db, String msg_from, String msg_body, long received_date) {
+    void create_or_update_logs(String msg_from, String msg_body, long received_date) {
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("msg_from", msg_from);
         contentValues.put("msg_body", msg_body);
@@ -35,9 +36,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (id == -1) {
             db.update("logs_table", contentValues, "received_date=?", new String[]{String.valueOf(received_date)});
         }
+        db.close();
     }
 
-    Cursor log_messages(SQLiteDatabase db) {
+    Cursor getLogMessages(SQLiteDatabase db) {
         String[] columns = {"msg_from", "msg_body", "received_date"};
         String orderBy = "received_date " + "DESC";
         return db.query("logs_table", columns, null, null, null, null, orderBy);

@@ -34,5 +34,7 @@
     <string name="nothing_to_show">Nothing to show</string>
     <string name="action_ok">Continue</string>
     <string name="permission_alert_dialog_title">SMS PERMISSION</string>
+    <string name="subscribed">subscribed</string>
+    <string name="exhausted">exhausted</string>
 
 </resources>
