@@ -1,10 +1,14 @@
 package com.dennohpeter.renewdata;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,15 +56,30 @@ public class AboutActivity extends AppCompatActivity {
         TextView version_textView = findViewById(R.id.app_version);
         String version_number = getString(R.string.app_version, appVersion(AboutActivity.this));
         version_textView.setText(version_number);
+
+        //Enable open in browser popup onclick
+        TextView copyright = findViewById(R.id.copyright);
+        copyright.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // Feedback and suggestions
+        RelativeLayout feedback = findViewById(R.id.feedback);
+        feedback.setOnClickListener(v -> {
+            String subject = "Feedback For " + getString(R.string.app_name) + " v" + appVersion(this);
+            //Add extras and launch intent to send email
+            Intent feedbackEmailIntent = new Intent(Intent.ACTION_SENDTO,
+                    Uri.fromParts("mailto", getString(R.string.email), null))
+                    .putExtra(Intent.EXTRA_SUBJECT, subject);
+            startActivity(Intent.createChooser(feedbackEmailIntent, subject));
+        });
+
     }
 
     public void showCredit(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.credits);
+        builder.setTitle(R.string.acknowledgements);
 
         View popupLayout = getLayoutInflater().inflate(R.layout.contributor_list_view, null);
         HashMap<String, String> contributor_roles = new HashMap<>();
-        contributor_roles.put(getString(R.string.creator), getString(R.string.creator_roles));
         contributor_roles.put(getString(R.string.dev1), getString(R.string.idealist));
         contributor_roles.put(getString(R.string.dev2), getString(R.string.contributor));
 

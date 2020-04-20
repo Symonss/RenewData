@@ -1,20 +1,21 @@
 <resources>
     <string name="app_name">Renew Data</string>
+    <string name="app_source">https://dennohpeter.com/projects/Renew%20Data.apk</string>
     <string name="telkom">Telkom</string>
     <string name="purchased_time">Purchased Time</string>
     <string name="expiry_time">Expiry Time</string>
     <string name="time_left">Time Left</string>
     <string name="renew_now">Renew Now</string>
     <string name="expired">Expired</string>
-    <string name="feedback">Feedback</string>
+    <string name="feedback_and_suggestions">Feedback &amp; Suggestions</string>
     <string name="about_renewdata">About Renew Data</string>
     <string name="sync_sms">Sync with Messages</string>
     <string name="email">denispeterson96@gmail.com</string>
     <!--    About activity  -->
     <string name="about">About</string>
     <string name="app_version">V: %1$s</string>
-    <string name="credits">Credit</string>
-    <string name="copyright">2019–2020 <a href="https://dennohpeter.com">Ariyans Techies</a>. All Rights Reserved.</string>
+    <string name="acknowledgements">Acknowledgements</string>
+    <string name="copyright">Built &amp; Designed by <a href="https://dennohpeter.com">Dennis Peterson</a> </string>
     <string name="rate">Rate</string>
     <string name="show_changelog">Show Changelog</string>
     <!--    Contributors Credit card -->
@@ -22,8 +23,6 @@
     <string name="role">Developer Role</string>
     <string name="name">Developer Name</string>
     <!--    Developer names and Roles -->
-    <string name="creator">Dennis Peterson</string>
-    <string name="creator_roles">Lead Developer</string>
     <string name="dev1">Coder Jaymoh</string>
     <string name="idealist">Idealist</string>
     <string name="dev2">Symons Ombori</string>
@@ -33,8 +32,29 @@
     <string name="message_body">Message body</string>
     <string name="nothing_to_show">Nothing to show</string>
     <string name="action_ok">Continue</string>
-    <string name="permission_alert_dialog_title">SMS PERMISSION</string>
     <string name="subscribed">subscribed</string>
     <string name="exhausted">exhausted</string>
+    <string name="twenty_four_hour_fmt">Check to display the time in a 24 hour format.</string>
+    <string name="twelve_hour_fmt">Uncheck to display the time in a 12 hour format using AM and PM.</string>
+    <string name="default_reminder_time">10</string>
+    <string name="default_snooze_time">5</string>
+    <string name="select_date_format">Select Date Format</string>
+    <string name="default_date_format">MMM dd, yyyy hh:mm:ss</string>
+    <string name="syncing_with_messages">Syncing with messages…</string>
 
+    // supported networks
+    <string-array name="networks">
+        <item>Telkom</item>
+    </string-array>
+
+    // supported languages
+    <string-array name="languages">
+        <item>English</item>
+    </string-array>
+
+    // date format
+    <string-array name="date_formats">
+        <item>MMM dd, yyyy hh:mm:ss</item>
+        <item>hh:mm:ss MMM dd, yyyy</item>
+    </string-array>
 </resources>

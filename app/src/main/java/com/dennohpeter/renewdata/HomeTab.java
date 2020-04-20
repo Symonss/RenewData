@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -15,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.preference.PreferenceManager;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -25,6 +28,8 @@ public class HomeTab extends androidx.fragment.app.Fragment {
     private DateUtil dateUtil;
     private TimeManager timeManager;
     private DatabaseHelper databaseHelper;
+    private String format_style;
+    private boolean in24hrsFormat;
     private BroadcastReceiver smsReceivedListener = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -37,7 +42,7 @@ public class HomeTab extends androidx.fragment.app.Fragment {
                     String message = intent.getStringExtra("msg_body");
                     long received_date = intent.getLongExtra("timestampMillis", -1);
                     // check if it's from Telkom
-                    if (msg_from.toLowerCase().contains(getString(R.string.telkom).toLowerCase())) {
+                    if (msg_from != null && msg_from.toLowerCase().contains(getString(R.string.telkom).toLowerCase())) {
                         // Save it  to db
                         databaseHelper.create_or_update_logs(msg_from, message, received_date);
                         // after saving, update timeline data
@@ -56,6 +61,13 @@ public class HomeTab extends androidx.fragment.app.Fragment {
         expiry_tmView = root.findViewById(R.id.expiry_time);
         tm_leftView = root.findViewById(R.id.time_left);
         Button renew_now = root.findViewById(R.id.renew_now);
+        // get preferences
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        in24hrsFormat = preferences.getBoolean("twenty4_hour_clock", false);
+        format_style = preferences.getString("format_style", getString(R.string.default_date_format));
+        String remindBeforeInMins = preferences.getString("remindBeforeInMinutes", getString(R.string.default_reminder_time));
+        String snoozeTimeInMins = preferences.getString("snooze_time", getString(R.string.default_snooze_time));
+
         // Set event listener for renew now btn
         renew_now.setOnClickListener(v -> initRenewProcess());
 
@@ -68,15 +80,16 @@ public class HomeTab extends androidx.fragment.app.Fragment {
         setTimeLineData();
 
         // Set Alarm Reminder
-        int remindBeforeInMins = 1;
-        setAlarmReminder(remindBeforeInMins);
+        setAlarmReminder(Integer.parseInt(remindBeforeInMins));
         return root;
     }
 
     private void setTimeLineData() {
         Log.d(TAG, "setting TimeLineData: ");
-        purchased_tmView.setText(dateUtil.getFormattedDate(timeManager.getPurchase_time()).replace("\n", " "));
-        expiry_tmView.setText(dateUtil.getFormattedDate(timeManager.getExpiry_time()).replace("\n", " "));
+        String expiry_date = dateUtil.formatDate(timeManager.getExpiry_time(), format_style, in24hrsFormat);
+        String purchase_date = dateUtil.formatDate(timeManager.getPurchase_time(), format_style, in24hrsFormat);
+        purchased_tmView.setText(purchase_date);
+        expiry_tmView.setText(expiry_date);
         setTimeLeft();
     }
 
@@ -124,17 +137,16 @@ public class HomeTab extends androidx.fragment.app.Fragment {
         long alarmStartTime = calendar.getTimeInMillis();
         if (timeManager.isExpired()) {
             // Cancel Alarm when expiry date is passed
-            alarmManager.cancel(pendingIntent);
+            if (alarmManager != null) {
+                alarmManager.cancel(pendingIntent);
+            }
         } else {
             // Set Alarm
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime, pendingIntent);
+            if (alarmManager != null) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime, pendingIntent);
+            }
         }
 
-    }
-
-    private void snooze() {
-        int remindMeAgainInMins = 1;
-        setAlarmReminder(remindMeAgainInMins);
     }
 
 

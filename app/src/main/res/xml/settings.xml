@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="@string/telkom"
+        android:entries="@array/networks"
+        android:entryValues="@array/networks"
+        android:icon="@drawable/ic_network"
+        android:key="select_network"
+        android:summary="Select default network"
+        android:title="@string/select_network" />
+
+    <PreferenceCategory android:title="Language Settings">
+        <ListPreference
+            android:defaultValue="English"
+            android:entries="@array/languages"
+            android:entryValues="@array/languages"
+            android:icon="@drawable/ic_language"
+            android:key="app_language"
+            android:summary="Select language to be used by the application"
+            android:title="Select Language" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Time and Date Settings">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="twenty4_hour_clock"
+            android:summary="@string/twenty_four_hour_fmt"
+            android:title="24 Hour Clock" />
+        <ListPreference
+            android:defaultValue="@string/default_date_format"
+            android:dialogTitle="@string/select_date_format"
+            android:entries="@array/date_formats"
+            android:entryValues="@array/date_formats"
+            android:icon="@drawable/ic_format"
+            android:key="date_format"
+            android:summary="Select how dates should be formatted"
+            android:title="Date Format" />
+        <EditTextPreference
+            android:defaultValue="@string/default_reminder_time"
+            android:icon="@drawable/ic_remind_before"
+            android:key="remindBeforeInMinutes"
+            android:summary="Set minutes to be reminded before expiry"
+            android:title="Remind Before" />
+        <EditTextPreference
+            android:defaultValue="@string/default_snooze_time"
+            android:dialogTitle="Snooze for minutes"
+            android:enabled="false"
+            android:icon="@drawable/ic_snooze"
+            android:key="snooze_time"
+            android:summary="Set time in minutes before next alarm reminder"
+            android:title="Snooze Reminder Interval" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Others">
+        <Preference
+            android:icon="@drawable/ic_share"
+            android:key="share_app"
+            android:summary="Recommend to friends"
+            android:title="Share With Friends" />
+        <Preference
+            android:icon="@drawable/ic_about"
+            android:key="about"
+            android:summary="@string/about_renewdata"
+            android:title="@string/about" />
+    </PreferenceCategory>
+</androidx.preference.PreferenceScreen>
