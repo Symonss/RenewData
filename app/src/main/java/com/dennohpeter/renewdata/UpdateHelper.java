@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
@@ -34,7 +35,7 @@ class UpdateHelper {
 
     private void check() {
         FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
-        //  This is a helper class for checking app updates
+        Log.d("check", "check: " + remoteConfig.getBoolean(KEY_UPDATE_AVAILABLE) + ", " + remoteConfig.getString(KEY_UPDATE_VERSION));
         if (remoteConfig.getBoolean(KEY_UPDATE_AVAILABLE)) {
             String currentVersion = remoteConfig.getString(KEY_UPDATE_VERSION);
 
@@ -74,11 +75,9 @@ class UpdateHelper {
             return new UpdateHelper(context, onUpdateCheckListener);
         }
 
-        UpdateHelper check() {
-
+        void check() {
             UpdateHelper updateHelper = build();
             updateHelper.check();
-            return updateHelper;
         }
 
     }

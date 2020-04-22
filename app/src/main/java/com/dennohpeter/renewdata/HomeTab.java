@@ -106,7 +106,7 @@ public class HomeTab extends androidx.fragment.app.Fragment {
 
             @Override
             public void onFinish() {
-                tm_leftView.setText(getString(R.string.expired));
+                tm_leftView.setText(getContext().getString(R.string.expired));
             }
         }.start();
 
@@ -146,8 +146,14 @@ public class HomeTab extends androidx.fragment.app.Fragment {
             }
         } else {
             // Set Alarm
-            if (alarmManager != null) {
+            if (alarmManager != null && timeManager.getTimeLeftInMins() >= remindBeforeInMins) {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmStartTime, pendingIntent);
+            }
+            // for cases where time left is less than reminderBeforeTime
+            else {
+                if (alarmManager != null) {
+                    alarmManager.cancel(pendingIntent);
+                }
             }
         }
 

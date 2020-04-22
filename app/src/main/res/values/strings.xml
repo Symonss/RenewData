@@ -44,7 +44,7 @@
 
     <string name="update_option">UPDATE</string>
     <string name="dismiss_text">OK, Later</string>
-    <string name="write_file">This app needs access to your file storage so that it can write files.</string>
+    <string name="write_file">This app needs access to your file storage to save the new apk.</string>
 
     <string name="update_title">New version is available</string>
     <string name="update_message">Please update to the new version to get new features.</string>

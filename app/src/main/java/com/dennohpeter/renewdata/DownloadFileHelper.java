@@ -21,12 +21,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Objects;
 
-import pub.devrel.easypermissions.BuildConfig;
-
 /**
  * Async Task to download file from URL
  */
-class DownloadFileHelper extends AsyncTask<String, String, String> {
+public class DownloadFileHelper extends AsyncTask<String, String, String> {
     private ProgressDialog progressDialog;
     private Context context;
 
@@ -43,6 +41,7 @@ class DownloadFileHelper extends AsyncTask<String, String, String> {
         super.onPreExecute();
         this.progressDialog = new ProgressDialog(context);
         this.progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        this.progressDialog.setTitle("Downloading new version...");
         this.progressDialog.setCancelable(false);
         this.progressDialog.show();
     }
@@ -70,17 +69,9 @@ class DownloadFileHelper extends AsyncTask<String, String, String> {
             String fileName = link.substring(link.lastIndexOf('/') + 1, link.lastIndexOf("?alt="));
 
             //External directory path to save file
-            String folder = Environment.getExternalStorageDirectory() + File.separator + "Download/";
-
-            //Create Download folder if it does not exist
-            File directory = new File(folder);
-
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-
+            File downloads_folder = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
             // Output stream to write file
-            OutputStream output = new FileOutputStream(folder + fileName);
+            OutputStream output = new FileOutputStream(downloads_folder + fileName);
 
             byte[] data = new byte[1024];
 
@@ -102,7 +93,7 @@ class DownloadFileHelper extends AsyncTask<String, String, String> {
             // closing streams
             output.close();
             input.close();
-            return folder + fileName;
+            return downloads_folder + fileName;
 
         } catch (Exception e) {
             Log.e("Error: ", Objects.requireNonNull(e.getMessage()));

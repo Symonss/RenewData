@@ -25,11 +25,15 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         setContentView(R.layout.activity_main);
         TabLayout tabLayout = findViewById(R.id.tabs);
 
+        // check update
+        check_update();
+
         tabLayout.addTab(tabLayout.newTab().setText("HOME"));
         tabLayout.addTab(tabLayout.newTab().setText("OPTIONS"));
         tabLayout.addTab(tabLayout.newTab().setText("LOGS"));
 
         final ViewPager viewPager = findViewById(R.id.view_pager);
+
         viewPager.setAdapter(new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount()));
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -48,9 +52,6 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
 
             }
         });
-
-        // check update
-        check_update();
     }
 
     public void check_update() {

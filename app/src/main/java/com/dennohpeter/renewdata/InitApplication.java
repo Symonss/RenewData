@@ -25,7 +25,7 @@ public class InitApplication extends Application {
         defaultValues.put(UpdateHelper.KEY_UPDATE_URL, getApplicationContext().getString(R.string.app_source));
         remoteConfig.setDefaultsAsync(defaultValues);
         // keep in sync in 2 minutes
-        remoteConfig.fetch(2 * 60)
+        remoteConfig.fetch(5)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         remoteConfig.activate();

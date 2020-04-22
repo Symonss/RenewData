@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.concurrent.TimeUnit;
+
 class TimeManager {
     private Utils utils;
     private long purchase_time;
@@ -29,6 +31,10 @@ class TimeManager {
     long getTimeLeftInMillis() {
         long currentTime = utils.currentDate();
         return expiry_time - currentTime;
+    }
+
+    int getTimeLeftInMins() {
+        return (int) TimeUnit.MILLISECONDS.toMinutes(getTimeLeftInMillis());
     }
 
     boolean isExpired() {

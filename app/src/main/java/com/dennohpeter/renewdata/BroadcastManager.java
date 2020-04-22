@@ -72,8 +72,8 @@ public class BroadcastManager extends BroadcastReceiver {
                             .setDefaults(Notification.DEFAULT_ALL)
                             .setColor(color)
                             .setContentIntent(HomeTabPendingIntent)
-                            .addAction(R.drawable.ic_snooze, "Remind Later", dismissPendingIntent)
-                            .addAction(R.drawable.ic_touch, "Renew Now", renewNoPendingIntent);
+                            .addAction(R.drawable.ic_snooze, "Remind Later", dismissPendingIntent);
+//                            .addAction(R.drawable.ic_touch, "Renew Now", renewNoPendingIntent);
                     // Notify
                     NotificationManagerCompat.from(context).notify(notificationId, builder.build());
                     break;
