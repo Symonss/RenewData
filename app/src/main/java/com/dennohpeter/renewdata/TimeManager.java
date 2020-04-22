@@ -5,14 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 class TimeManager {
-    private DateUtil dateUtil;
+    private Utils utils;
     private long purchase_time;
     private long expiry_time;
     private DatabaseHelper databaseHelper;
 
     TimeManager(Context context) {
         databaseHelper = new DatabaseHelper(context);
-        dateUtil = new DateUtil();
+        utils = new Utils();
 
         // Setting Expiry and Purchase date from messages
         setFieldMembers(context);
@@ -27,7 +27,7 @@ class TimeManager {
     }
 
     long getTimeLeftInMillis() {
-        long currentTime = dateUtil.currentDate();
+        long currentTime = utils.currentDate();
         return expiry_time - currentTime;
     }
 
@@ -41,7 +41,7 @@ class TimeManager {
         while (cursor.moveToNext()) {
             if (cursor.getString(cursor.getColumnIndex("msg_body")).contains(context.getString(R.string.subscribed))) {
                 this.purchase_time = cursor.getLong(cursor.getColumnIndex("received_date"));
-                this.expiry_time = dateUtil.add24Hours(purchase_time);
+                this.expiry_time = utils.add24Hours(purchase_time);
                 break;
             }
         }

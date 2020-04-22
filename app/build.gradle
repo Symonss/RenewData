@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -43,4 +44,7 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     // refresh on pull down
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    // Firebase SDK for Google Analytics
+    implementation 'com.google.firebase:firebase-analytics:17.3.0'
+
 }

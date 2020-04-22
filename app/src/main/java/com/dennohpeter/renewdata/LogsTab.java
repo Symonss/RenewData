@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Telephony;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +30,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class LogsTab extends androidx.fragment.app.Fragment {
     private static final String TAG = "LogsTab";
+    private static final int SMS_PERMISSION_CODE = 12;
     private RecyclerView recyclerView;
     private TextView nothing_to_show;
     private DatabaseHelper databaseHelper;
     private LogsAdapter logsAdapter;
-    private static final int SMS_PERMISSION_CODE = 12;
     private String format_style;
     private boolean in24hrsFormat;
     private SwipeRefreshLayout pullToRefresh;
@@ -59,7 +58,6 @@ public class LogsTab extends androidx.fragment.app.Fragment {
         logsAdapter = new LogsAdapter();
         recyclerView.setAdapter(logsAdapter);
         databaseHelper = new DatabaseHelper(getContext());
-        Log.d(TAG, "onCreateView: ");
         new populateRecyclerView().execute();
         setSwipeRefreshView();
         return root;
@@ -98,23 +96,30 @@ public class LogsTab extends androidx.fragment.app.Fragment {
     private void requestReadSmsPermission(Activity activity) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_SMS)) {
             // None blocking explanation
-            showRequestPermissionsInfoAlertDialog(activity.getApplicationContext());
+            showRequestPermissionsInfoAlertDialog(getContext(), activity);
         } else {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_SMS}, SMS_PERMISSION_CODE);
+            // disable loading
+            pullToRefresh.setRefreshing(false);
         }
     }
 
-    private void showRequestPermissionsInfoAlertDialog(Context context) {
+    private void showRequestPermissionsInfoAlertDialog(Context context, Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage("To sync with messages, allow " + context.getString(R.string.app_name) + " to access sms.");
 
         builder.setPositiveButton(R.string.action_ok, (dialog, which) -> {
             //  request runtime permission
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_SMS}, SMS_PERMISSION_CODE);
-
-        }).setNegativeButton("Not Now", (dialog, which) -> dialog.dismiss());
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_SMS}, SMS_PERMISSION_CODE);
+            // disable loading
+            pullToRefresh.setRefreshing(false);
+        }).setNegativeButton("Not Now", (dialog, which) -> {
+            dialog.dismiss();
+            pullToRefresh.setRefreshing(false);
+            Toast.makeText(context, "Syncing cancelled..", Toast.LENGTH_SHORT).show();
+        });
         builder.setCancelable(false);
-        builder.create().show();
+        builder.show();
 
 
     }
@@ -144,6 +149,7 @@ public class LogsTab extends androidx.fragment.app.Fragment {
     class populateRecyclerView extends AsyncTask<Void, MessageModel, Void> {
         Cursor cursor;
         SQLiteDatabase db;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -158,7 +164,7 @@ public class LogsTab extends androidx.fragment.app.Fragment {
                 String msg_from = cursor.getString(cursor.getColumnIndex("msg_from"));
                 String msg_body = cursor.getString(cursor.getColumnIndex("msg_body"));
                 long dateInMilliseconds = cursor.getLong(cursor.getColumnIndex("received_date"));
-                String formatted_date = new DateUtil().formatDate(dateInMilliseconds, format_style, in24hrsFormat, "\n");
+                String formatted_date = new Utils().formatDate(dateInMilliseconds, format_style, in24hrsFormat, "\n");
                 publishProgress(new MessageModel(formatted_date, msg_body, msg_from));
             }
             return null;
@@ -180,8 +186,10 @@ public class LogsTab extends androidx.fragment.app.Fragment {
             } else {
                 nothing_to_show.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), "Done updating logs.", Toast.LENGTH_SHORT).show();
+                }
             }
-            Log.d(TAG, "onPostExecute: " + logsAdapter.size());
             recyclerView.setAdapter(logsAdapter);
         }
     }
@@ -206,7 +214,6 @@ public class LogsTab extends androidx.fragment.app.Fragment {
             cursor = getContext().getContentResolver().query(Telephony.Sms.CONTENT_URI, null, null, null, null);
             if (cursor != null) {
                 db = databaseHelper.getWritableDatabase();
-                Log.d(TAG, "fetch_messages: " + cursor.getCount());
                 int count = 0;
                 while (cursor.moveToNext()) {
                     String msg_from = cursor.getString(cursor.getColumnIndex(Telephony.Sms.ADDRESS));
@@ -243,8 +250,12 @@ public class LogsTab extends androidx.fragment.app.Fragment {
             if (result.equals("success")) {
                 db.close();
                 progressDialog.dismiss();
+                // after successful fetch populate recycler viewer
+                new populateRecyclerView().execute();
             } else {
-                Toast.makeText(getContext(), "No Messages", Toast.LENGTH_LONG).show();
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), "No Messages", Toast.LENGTH_LONG).show();
+                }
             }
             cursor.close();
             // Stop refreshing

@@ -1,8 +1,6 @@
 package com.dennohpeter.renewdata;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -18,8 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.michaelflisar.changelog.ChangelogBuilder;
+import com.michaelflisar.changelog.ChangelogSetup;
 import com.michaelflisar.changelog.classes.DefaultAutoVersionNameFormatter;
-import com.michaelflisar.changelog.classes.ImportanceChangelogSorter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,22 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 public class AboutActivity extends AppCompatActivity {
-    /*
-     * Takes Activity Context and returns a String of the App Version e.g 1.0
-     */
-    static String appVersion(Context context) {
-        String result = "";
-        try {
-            result = context.getPackageManager().getPackageInfo(context.getPackageName(), 0)
-                    .versionName;
-            result = result.replaceAll("[a-zA-Z]|-", "");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return result;
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +36,7 @@ public class AboutActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         // setting app version_textView
         TextView version_textView = findViewById(R.id.app_version);
-        String version_number = getString(R.string.app_version, appVersion(AboutActivity.this));
+        String version_number = getString(R.string.app_version, Utils.getAppVersion(AboutActivity.this));
         version_textView.setText(version_number);
 
         //Enable open in browser popup onclick
@@ -64,7 +46,7 @@ public class AboutActivity extends AppCompatActivity {
         // Feedback and suggestions
         RelativeLayout feedback = findViewById(R.id.feedback);
         feedback.setOnClickListener(v -> {
-            String subject = "Feedback For " + getString(R.string.app_name) + " v" + appVersion(this);
+            String subject = "Feedback For " + getString(R.string.app_name) + " v" + Utils.getAppVersion(this);
             //Add extras and launch intent to send email
             Intent feedbackEmailIntent = new Intent(Intent.ACTION_SENDTO,
                     Uri.fromParts("mailto", getString(R.string.email), null))
@@ -104,12 +86,19 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void showChangelog(View view) {
+        // registering custom tags
+        String misc_prefix = "<font color=\"#6AC90C\"><b>Misc: </b></font>";
+        ChangelogSetup.get().registerTag(new CustomTags("misc", misc_prefix));
+        String todo_prefix = "<font color=\"#CC0F00\"><b>Todo: </b></font>";
+        ChangelogSetup.get().registerTag(new CustomTags("todo", todo_prefix));
+        // prepare changelog
         ChangelogBuilder builder = new ChangelogBuilder()
                 .withUseBulletList(true)
                 .withManagedShowOnStart(false)
-                .withTitle(getString(R.string.app_name) + " Changelog")
-                .withSorter(new ImportanceChangelogSorter())
+                .withTitle(getString(R.string.changelog))
+                .withOkButtonLabel(getString(R.string.close))
                 .withVersionNameFormatter(new DefaultAutoVersionNameFormatter(DefaultAutoVersionNameFormatter.Type.MajorMinor, "b"));
+        // build and show changelog
         builder.buildAndShowDialog(this, false);
     }
 

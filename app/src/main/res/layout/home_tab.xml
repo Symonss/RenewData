@@ -15,10 +15,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:fontFamily="@font/sanchez"
             android:padding="10dp"
             android:text="@string/purchased_time"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/purchased_time"
@@ -26,15 +26,17 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:padding="15dp"
-            android:text="@string/purchased_time" />
+            android:fontFamily="sans-serif-black"
+            android:text="@string/not_date"
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/sanchez"
             android:padding="10dp"
             android:text="@string/expiry_time"
-            android:textColor="@android:color/black"
-            android:textSize="19sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/expiry_time"
@@ -42,31 +44,27 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:padding="15dp"
-            android:text="@string/expiry_time" />
+            android:fontFamily="sans-serif-black"
+            android:text="@string/not_date"
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/sanchez"
             android:padding="10dp"
             android:text="@string/time_left"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/time_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif"
             android:padding="15dp"
-            android:text="@string/time_left" />
-
-        <Button
-            android:id="@+id/renew_now"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="18dp"
-            android:text="@string/renew_now" />
+            android:text="@string/not_date"
+            android:textSize="18sp" />
 
     </LinearLayout>
 </ScrollView>

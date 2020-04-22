@@ -45,20 +45,21 @@ public class OptionsTab extends PreferenceFragmentCompat {
             });
         }
         // Share app
-        Preference shareApp = findPreference("shareApp");
-        shareApp.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
+        Preference shareApp = findPreference("share_app");
+        if (shareApp != null) {
+            shareApp.setOnPreferenceClickListener(preference -> {
+                String body = "Check Out " + getString(R.string.app_name) +
+                        "!, a simple and efficient reminder app to help you manage mobile data efficiently.\n" +
+                        "Get " + getString(R.string.app_name) + ":\n" + getString(R.string.app_source);
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_TEXT, "Check Out " + getString(R.string.app_name) + ", a simple and efficient reminder app to help you manage mobile data efficiently.");
-                intent.putExtra(Intent.EXTRA_TEXT, "Get " + getString(R.string.app_name) + ": " + getString(R.string.app_source));
+                intent.putExtra(Intent.EXTRA_TEXT, body);
                 intent.setType("text/plain");
 
                 startActivity(Intent.createChooser(intent, "Share via"));
                 return true;
-            }
-        });
+            });
+        }
         // about app handler
         Preference about = findPreference("about");
         if (about != null) {

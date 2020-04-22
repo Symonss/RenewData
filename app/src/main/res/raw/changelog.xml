@@ -1,9 +1,19 @@
 <changelog>
     <release
-        date="2020-04-20"
+        date="2020-04-22"
         versionName="First Release"
         versionCode="100">
         <new>Initial Release</new>
-        <new>Night theme</new>
+        <new>Push Notification Reminder</new>
+        <new>Automatic ability to sync with messages</new>
+        <misc>Many Other Features Discover them Yourself!</misc>
+
+        <info>TODO</info>
+        <todo>Integrate with M-pesa</todo>
+        <todo>Support more networks</todo>
+        <todo>Add auto renew capability while offline</todo>
+        <todo>Add themes</todo>
+        <todo>Enable user to snooze data renewal</todo>
+        <todo>Bug fixes.</todo>
     </release>
 </changelog>

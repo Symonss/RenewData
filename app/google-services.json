@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "6792538087",
+    "firebase_url": "https://renew-data.firebaseio.com",
+    "project_id": "renew-data",
+    "storage_bucket": "renew-data.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6792538087:android:aa65c23857309cbdd67f42",
+        "android_client_info": {
+          "package_name": "com.dennohpeter.renewdata"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "6792538087-tv0ffi4hv2p9d20md9lad45ij0mq6m86.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dennohpeter.renewdata",
+            "certificate_hash": "c38ee8759c1a806eb2145b98b5877024556f400f"
+          }
+        },
+        {
+          "client_id": "6792538087-lhiaki9caa0lnis6rps8rgap6jnv7s5r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr2QhEoWbVMDu-19B8SDo5q1_xKmdRWrA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "6792538087-lhiaki9caa0lnis6rps8rgap6jnv7s5r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,15 +1,15 @@
 <resources>
     <string name="app_name">Renew Data</string>
-    <string name="app_source">https://dennohpeter.com/projects/Renew%20Data.apk</string>
+    <string name="app_source">https://dennohpeter.com/projects/renew-data</string>
     <string name="telkom">Telkom</string>
     <string name="purchased_time">Purchased Time</string>
     <string name="expiry_time">Expiry Time</string>
     <string name="time_left">Time Left</string>
     <string name="renew_now">Renew Now</string>
     <string name="expired">Expired</string>
+    <string name="not_date">__:__:__</string>
     <string name="feedback_and_suggestions">Feedback &amp; Suggestions</string>
     <string name="about_renewdata">About Renew Data</string>
-    <string name="sync_sms">Sync with Messages</string>
     <string name="email">denispeterson96@gmail.com</string>
     <!--    About activity  -->
     <string name="about">About</string>
@@ -30,7 +30,7 @@
     <string name="select_network">Select Network: </string>
     <string name="date">date</string>
     <string name="message_body">Message body</string>
-    <string name="nothing_to_show">Nothing to show</string>
+    <string name="nothing_to_show">Nothing to show.\n Try <b>refreshing…</b></string>
     <string name="action_ok">Continue</string>
     <string name="subscribed">subscribed</string>
     <string name="exhausted">exhausted</string>
@@ -41,6 +41,15 @@
     <string name="select_date_format">Select Date Format</string>
     <string name="default_date_format">MMM dd, yyyy hh:mm:ss</string>
     <string name="syncing_with_messages">Syncing with messages…</string>
+
+    <string name="update_option">UPDATE</string>
+    <string name="dismiss_text">OK, Later</string>
+    <string name="write_file">This app needs access to your file storage so that it can write files.</string>
+
+    <string name="update_title">New version is available</string>
+    <string name="update_message">Please update to the new version to get new features.</string>
+    <string name="close">CLOSE</string>
+    <string name="changelog">Changelog</string>
 
     // supported networks
     <string-array name="networks">

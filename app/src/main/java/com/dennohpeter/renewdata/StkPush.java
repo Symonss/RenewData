@@ -36,7 +36,7 @@ class StkPush {
 
     StkPush(Context context) {
         client = new OkHttpClient();
-        timestamp = new DateUtil().timestamp();
+        timestamp = new Utils().timestamp();
         this.context = context;
         this.activity = (Activity) context;
     }

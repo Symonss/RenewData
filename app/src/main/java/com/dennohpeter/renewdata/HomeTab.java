@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.preference.PreferenceManager;
@@ -25,7 +24,7 @@ import java.util.Locale;
 public class HomeTab extends androidx.fragment.app.Fragment {
     private static final String TAG = "Renew Data";
     private TextView purchased_tmView, expiry_tmView, tm_leftView;
-    private DateUtil dateUtil;
+    private Utils utils;
     private TimeManager timeManager;
     private DatabaseHelper databaseHelper;
     private String format_style;
@@ -60,18 +59,18 @@ public class HomeTab extends androidx.fragment.app.Fragment {
         purchased_tmView = root.findViewById(R.id.purchased_time);
         expiry_tmView = root.findViewById(R.id.expiry_time);
         tm_leftView = root.findViewById(R.id.time_left);
-        Button renew_now = root.findViewById(R.id.renew_now);
+
+//        Button renew_now = root.findViewById(R.id.renew_now);
         // get preferences
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         in24hrsFormat = preferences.getBoolean("twenty4_hour_clock", false);
         format_style = preferences.getString("format_style", getString(R.string.default_date_format));
         String remindBeforeInMins = preferences.getString("remindBeforeInMinutes", getString(R.string.default_reminder_time));
-        String snoozeTimeInMins = preferences.getString("snooze_time", getString(R.string.default_snooze_time));
 
         // Set event listener for renew now btn
-        renew_now.setOnClickListener(v -> initRenewProcess());
+//        renew_now.setOnClickListener(v -> initRenewProcess());
 
-        dateUtil = new DateUtil();
+        utils = new Utils();
         // initialize DatabaseHelper
         databaseHelper = new DatabaseHelper(getContext());
         // Initialize timeManager
@@ -85,12 +84,17 @@ public class HomeTab extends androidx.fragment.app.Fragment {
     }
 
     private void setTimeLineData() {
-        Log.d(TAG, "setting TimeLineData: ");
-        String expiry_date = dateUtil.formatDate(timeManager.getExpiry_time(), format_style, in24hrsFormat);
-        String purchase_date = dateUtil.formatDate(timeManager.getPurchase_time(), format_style, in24hrsFormat);
-        purchased_tmView.setText(purchase_date);
-        expiry_tmView.setText(expiry_date);
-        setTimeLeft();
+        long purchase_time = timeManager.getPurchase_time();
+        long expiry_time = timeManager.getExpiry_time();
+        if (purchase_time > 0) {
+            String purchase_date = utils.formatDate(purchase_time, format_style, in24hrsFormat);
+            String expiry_date = utils.formatDate(expiry_time, format_style, in24hrsFormat);
+
+            purchased_tmView.setText(purchase_date);
+            expiry_tmView.setText(expiry_date);
+
+            setTimeLeft();
+        }
     }
 
     private void setTimeLeft() {
@@ -149,11 +153,6 @@ public class HomeTab extends androidx.fragment.app.Fragment {
 
     }
 
-
-    private void initRenewProcess() {
-        StkPush stkPush = new StkPush(getContext());
-        stkPush.initiateRenewProcess();
-    }
 
     @Override
     public void onPause() {
