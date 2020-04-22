@@ -1,6 +1,6 @@
 # RenewData
 
-Renew Data is a mobile application that reminds you to renew your data plan before it expires :green_heart:.<br>
+**Renew Data** is a mobile application that reminds you to renew your data plan before it expires :green_heart:.<br>
 It's designed with intent to help you automate stuff and give you more time to focus on things that matter.
 
 <hr>
@@ -8,7 +8,7 @@ It's designed with intent to help you automate stuff and give you more time to f
 ## :hammer_and_wrench: Downloads
 **V 1.5.0** _on the make_.
 
-**V 1.0.0** Get it : 
+**V 1.0.0** Get it : https://bit.ly/getrenewdata
 ## :rocket: Previews
 
 ## :electric_plug: Contributing
