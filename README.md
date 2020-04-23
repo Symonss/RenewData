@@ -10,6 +10,15 @@ It's designed with intent to help you automate stuff and give you more time to f
 
 **V 1.0.0** Get it : https://bit.ly/getrenewdata
 ## :rocket: Previews
+<div>    
+<img src="https://user-images.githubusercontent.com/29105876/80045107-292c6380-850f-11ea-8846-bc93fa6174d4.jpeg"  width="200">
+<img src="https://user-images.githubusercontent.com/29105876/80045102-2893cd00-850f-11ea-8289-b8e551c093c8.jpeg"  width="200">
+<img src="https://user-images.githubusercontent.com/29105876/80045096-2598dc80-850f-11ea-9da1-4f567db83322.jpeg" width="200">
+<img src="https://user-images.githubusercontent.com/29105876/80045098-27fb3680-850f-11ea-8fbb-1a82c9b508e3.jpeg"  width="200">
+<img src="https://user-images.githubusercontent.com/29105876/80045108-29c4fa00-850f-11ea-831f-5f59cc8d3cf5.jpeg"  width="200">
+<img src="https://user-images.githubusercontent.com/29105876/80045111-2a5d9080-850f-11ea-9e24-1a49d85e2eb1.jpeg"  width="200">
+<img src="https://user-images.githubusercontent.com/29105876/80045114-2b8ebd80-850f-11ea-8209-f15f7c574f28.jpeg"  width="200">
+</div>
 
 ## :electric_plug: Contributing
 
